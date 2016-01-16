@@ -9,4 +9,11 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="edu.rosehulman.jungckjp_leekf.rosebandwidth.LoginActivity">
 
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="Log In"
+        android:id="@+id/login_button"
+        android:layout_centerInParent="true"/>
+
 </RelativeLayout>
