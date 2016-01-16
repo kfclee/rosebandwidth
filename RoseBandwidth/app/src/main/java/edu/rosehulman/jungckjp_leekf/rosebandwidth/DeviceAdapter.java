@@ -24,6 +24,10 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
 
         Device testDevice = new Device("Laptop", "ee:80:f6...", 901, 0);
         mDevices.add(testDevice);
+        testDevice = new Device("iPhone", "ee:80:f6...", 4000, 0);
+        mDevices.add(testDevice);
+        testDevice = new Device("PS4", "ee:80:f6...", 100000, 0);
+        mDevices.add(testDevice);
         notifyDataSetChanged();
     }
 
@@ -36,8 +40,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.mName.setText(mDevices.get(position).getName());
-        holder.mUsage.setText(mDevices.get(position).getUsageAmount());
-
+        holder.mUsage.setText(Integer.toString(mDevices.get(position).getUsageAmount()));
     }
 
     @Override

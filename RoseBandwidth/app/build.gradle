@@ -4,6 +4,8 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
 
+    useLibrary 'org.apache.http.legacy'
+
     defaultConfig {
         applicationId "edu.rosehulman.jungckjp_leekf.rosebandwidth"
         minSdkVersion 15

@@ -18,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.io.IOException;
 
 
 public class MainActivity extends AppCompatActivity
@@ -40,6 +41,12 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        try {
+            new API().execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
