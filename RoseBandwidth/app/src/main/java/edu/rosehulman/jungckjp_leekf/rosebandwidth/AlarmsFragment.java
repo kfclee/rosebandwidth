@@ -13,10 +13,10 @@ import android.view.ViewGroup;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AlertsFragment extends Fragment {
+public class AlarmsFragment extends Fragment {
     public AlarmsAdapter mAdapter;
 
-    public AlertsFragment() {
+    public AlarmsFragment() {
         // Required empty public constructor
     }
 
