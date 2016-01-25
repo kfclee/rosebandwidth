@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/RoseBandwidth.iml" filepath="$PROJECT_DIR$/RoseBandwidth.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android-ntlm/android-ntlm.iml" filepath="$PROJECT_DIR$/android-ntlm/android-ntlm.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

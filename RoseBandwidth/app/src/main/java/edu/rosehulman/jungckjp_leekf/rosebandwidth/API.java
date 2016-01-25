@@ -10,16 +10,21 @@ import java.io.InputStreamReader;
 import java.net.Authenticator;
 import java.net.MalformedURLException;
 import java.net.PasswordAuthentication;
+import java.net.URI;
 import java.net.URL;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.NTCredentials;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import java.net.URLConnection;
 
 import javax.net.ssl.HttpsURLConnection;
+
+import eu.masconsult.android_ntlm.NTLMSchemeFactory;
 
 /**
  * Created by jonathan on 1/16/16.
@@ -34,71 +39,45 @@ public class API extends AsyncTask<String, Void, String>{
 
     }
 
+    static class MyAuthenticator extends Authenticator {
+        public PasswordAuthentication getPasswordAuthentication() {
+            // I haven't checked getRequestingScheme() here, since for NTLM
+            // and Negotiate, the usrname and password are all the same.
+            System.err.println("Feeding username and password for " + getRequestingScheme());
+            return (new PasswordAuthentication(name, password.toCharArray()));
+        }
+    }
+
     @Override
     protected String doInBackground(String... params) {
-        String urlString = "https://netreg.rose-hulman.edu/tools/networkUsage.pl";
-
-        URL url = null;
+        String urlString = "https://netreg.rose-hulman.edu/tools/networkUsageData.pl";
         String content = "";
         try {
-//            url = new URL(urlString);
-//            HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
-//
-//            String authString = name + ":" + password;
-//            System.out.println("auth string: " + authString);
-//            String authStringEnc = Base64.encodeToString(authString.getBytes(), Base64.DEFAULT).replace("\n", "");
-//            System.out.println("Base64 encoded auth string: " + authStringEnc);
-//
-//            con.setRequestProperty("Authorization", "Basic " + authStringEnc);
-//
-//
-//            InputStream is =con.getInputStream();
-//
-//            // Once you have the Input Stream, it's just plain old Java IO stuff.
-//
-//            // For this case, since you are interested in getting plain-text web page
-//            // I'll use a reader and output the text content to System.out.
-//
-//            // For binary content, it's better to directly read the bytes from stream and write
-//            // to the target file.
-//
-//
-//            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-//
-//            String line = null;
-//
-//            // read each line and write to System.out
-//            while ((line = br.readLine()) != null) {
-//                System.out.println(line);
-//                content += line;
-//            }
+            DefaultHttpClient httpclient = new DefaultHttpClient();
+            // register ntlm auth scheme
+            httpclient.getAuthSchemes().register("ntlm", new NTLMSchemeFactory());
+            httpclient.getCredentialsProvider().setCredentials(
+                    // Limit the credentials only to the specified domain and port
+                    new AuthScope("netreg.rose-hulman.edu", -1),
+                    // Specify credentials, most of the time only user/pass is needed
+                    new NTCredentials(name, password, "", "")
+            );
 
-            Authenticator.setDefault(new MyAuthenticator());
-            url = new URL(urlString);
-            HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
-
-            System.out.println(con.getResponseMessage());
-            System.out.println(con.getHeaderFields());
-                        int status = con.getResponseCode();
-            System.out.println(Integer.toString(status));
-
-            InputStream ins = con.getInputStream();
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(ins));
-            String str;
-            while ((str = reader.readLine()) != null) {
-                System.out.println(str);
+            HttpGet request = new HttpGet();
+            URI website = new URI(urlString);
+            request.setURI(website);
+            HttpResponse response = httpclient.execute(request);
+            BufferedReader in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+            String n;
+            while ((n = in.readLine()) != null) {
+                System.out.println(n);
             }
-        } catch (IOException e) {
+            in.close();
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         return content;
-    }
-
-    static class MyAuthenticator extends Authenticator {
-        public PasswordAuthentication getPasswordAuthentication() {
-            return (new PasswordAuthentication(name, password.toCharArray()));
-        }
     }
 }
