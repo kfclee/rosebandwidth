@@ -19,6 +19,8 @@ import java.io.IOException;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private API mAPI;
+
     private DeviceAdapter mAdapter;
 
     @Override
@@ -44,7 +46,9 @@ public class MainActivity extends AppCompatActivity
         }
 
         try {
-            new API().execute();
+            mAPI = API.getInstance();
+            mAPI.execute();
+//            new API().execute();
         } catch (IOException e) {
             e.printStackTrace();
         }

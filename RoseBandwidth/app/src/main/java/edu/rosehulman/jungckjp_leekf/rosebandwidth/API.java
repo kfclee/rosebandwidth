@@ -21,6 +21,9 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -34,9 +37,21 @@ public class API extends AsyncTask<String, Void, String>{
     static final String name = "jungckjp";
     static final String password = "";
 
+    private static API me;
+
+    ArrayList<Device> mDevices = new ArrayList<Device>();
+
 
     public API() throws IOException {
 
+    }
+
+    public static API getInstance() throws IOException {
+        if (me == null) {
+            me = new API();
+        }
+
+        return me;
     }
 
     static class MyAuthenticator extends Authenticator {
@@ -69,10 +84,20 @@ public class API extends AsyncTask<String, Void, String>{
             HttpResponse response = httpclient.execute(request);
             BufferedReader in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
             String n;
+            int i = 0;
             while ((n = in.readLine()) != null) {
                 System.out.println(n);
+                if (i >= 6) {
+                    List<String> items = Arrays.asList(n.split("\\s*,\\s*"));
+                    Device device = new Device(items.get(2), items.get(0),Float.parseFloat((String)items.get(3)),0);
+                    mDevices.add(device);
+                }
+                i++;
             }
             in.close();
+            for (Device d : mDevices) {
+                System.out.println(d.getName() + " " + d.getMacAddress() + " " + d.getUsageAmount());
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

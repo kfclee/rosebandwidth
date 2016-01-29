@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -17,17 +18,22 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
     private ArrayList<Device> mDevices = new ArrayList<Device>();
     private Context mContext;
     private RecyclerView mRecyclerView;
+    private API mAPI;
 
-    public DeviceAdapter(Context context, RecyclerView rView){
+    public DeviceAdapter(Context context, RecyclerView rView) throws IOException {
         mContext = context;
         mRecyclerView = rView;
 
-        Device testDevice = new Device("Laptop", "ee:80:f6...", 901, 0);
-        mDevices.add(testDevice);
-        testDevice = new Device("iPhone", "ee:80:f6...", 4000, 0);
-        mDevices.add(testDevice);
-        testDevice = new Device("PS4", "ee:80:f6...", 100000, 0);
-        mDevices.add(testDevice);
+        mAPI = API.getInstance();
+
+        mDevices = mAPI.mDevices;
+
+//        Device testDevice = new Device("Laptop", "ee:80:f6...", 901, 0);
+//        mDevices.add(testDevice);
+//        testDevice = new Device("iPhone", "ee:80:f6...", 4000, 0);
+//        mDevices.add(testDevice);
+//        testDevice = new Device("PS4", "ee:80:f6...", 100000, 0);
+//        mDevices.add(testDevice);
         notifyDataSetChanged();
     }
 
@@ -40,7 +46,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.mName.setText(mDevices.get(position).getName());
-        holder.mUsage.setText(Integer.toString(mDevices.get(position).getUsageAmount()));
+        holder.mUsage.setText(mDevices.get(position).getUsageAmount() + " MB");
     }
 
     @Override

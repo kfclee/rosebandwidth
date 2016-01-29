@@ -35,7 +35,9 @@ public class LoginActivity extends AppCompatActivity {
 
         Button button = (Button) findViewById(R.id.login_button);
         mEmailView = (EditText) findViewById(R.id.username_text);
+        mEmailView.setText("");
         mPasswordView = (EditText) findViewById(R.id.password_text);
+        mPasswordView.setText("");
         mProgressSpinner = findViewById(R.id.login_progress);
         mLoggingIn = false;
 

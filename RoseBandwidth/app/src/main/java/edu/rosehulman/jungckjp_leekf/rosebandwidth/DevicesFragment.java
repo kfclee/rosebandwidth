@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.io.IOException;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,7 +34,11 @@ public class DevicesFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
 
-        mAdapter = new DeviceAdapter(getContext(), recyclerView);
+        try {
+            mAdapter = new DeviceAdapter(getContext(), recyclerView);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         recyclerView.setAdapter(mAdapter);
 
         // Inflate the layout for this fragment

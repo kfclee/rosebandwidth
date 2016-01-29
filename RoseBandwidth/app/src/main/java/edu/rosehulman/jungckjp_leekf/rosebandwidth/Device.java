@@ -6,10 +6,10 @@ package edu.rosehulman.jungckjp_leekf.rosebandwidth;
 public class Device {
     private String name;
     private String macAddress;
-    private int usageAmount;
+    private float usageAmount;
     private int imageRes;
 
-    public Device(String name, String macAddress, int usageAmount, int imageRes) {
+    public Device(String name, String macAddress, float usageAmount, int imageRes) {
         this.name = name;
         this.macAddress = macAddress;
         this.usageAmount = usageAmount;
@@ -32,11 +32,11 @@ public class Device {
         this.macAddress = macAddress;
     }
 
-    public int getUsageAmount() {
+    public float getUsageAmount() {
         return usageAmount;
     }
 
-    public void setUsageAmount(int usageAmount) {
+    public void setUsageAmount(float usageAmount) {
         this.usageAmount = usageAmount;
     }
 
