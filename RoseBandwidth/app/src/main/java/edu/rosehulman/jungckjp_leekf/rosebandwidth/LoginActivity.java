@@ -66,6 +66,8 @@ public class LoginActivity extends AppCompatActivity {
 
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.putExtra("url", url);
+        intent.putExtra("password", mPasswordView.getText().toString());
+        intent.putExtra("username", mEmailView.getText().toString());
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
         startActivity(intent);
         finish();

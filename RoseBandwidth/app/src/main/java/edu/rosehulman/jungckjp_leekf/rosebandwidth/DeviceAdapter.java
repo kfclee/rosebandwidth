@@ -15,7 +15,6 @@ import java.util.ArrayList;
  * Created by leekf on 1/12/2016.
  */
 public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder> {
-    private ArrayList<Device> mDevices = new ArrayList<Device>();
     private Context mContext;
     private RecyclerView mRecyclerView;
     private API mAPI;
@@ -24,9 +23,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
         mContext = context;
         mRecyclerView = rView;
 
-        mAPI = API.getInstance();
-
-        mDevices = mAPI.mDevices;
+        mAPI = API.getInstance((MainActivity)context);
 
 //        Device testDevice = new Device("Laptop", "ee:80:f6...", 901, 0);
 //        mDevices.add(testDevice);
@@ -45,13 +42,13 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.mName.setText(mDevices.get(position).getName());
-        holder.mUsage.setText(mDevices.get(position).getUsageAmount() + " MB");
+        holder.mName.setText(mAPI.mDevices.get(position).getName());
+        holder.mUsage.setText(mAPI.mDevices.get(position).getUsageAmount() + " MB");
     }
 
     @Override
     public int getItemCount() {
-        return mDevices.size();
+        return mAPI.mDevices.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{

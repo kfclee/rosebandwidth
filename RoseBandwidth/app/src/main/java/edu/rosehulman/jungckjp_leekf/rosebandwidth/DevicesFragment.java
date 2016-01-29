@@ -45,4 +45,8 @@ public class DevicesFragment extends Fragment {
         return recyclerView;
     }
 
+    public DeviceAdapter getAdapter(){
+        return mAdapter;
+    }
+
 }

@@ -1,6 +1,8 @@
 package edu.rosehulman.jungckjp_leekf.rosebandwidth;
 
 
+import android.content.Intent;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
@@ -10,11 +12,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import java.io.IOException;
-
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -40,15 +42,18 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         if (savedInstanceState == null) {
+
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.add(R.id.fragment_container, new UsageFragment());
             ft.commit();
         }
 
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putString("password",getIntent().getStringExtra("password")).commit();
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putString("username", getIntent().getStringExtra("username")).commit();
+
         try {
-            mAPI = API.getInstance();
-            mAPI.execute();
-//            new API().execute();
+            mAPI = API.createNew(this);
+            mAPI.getData();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -80,6 +85,9 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }else if(id == R.id.action_logout){
+            onLogout();
             return true;
         }
 
@@ -113,7 +121,7 @@ public class MainActivity extends AppCompatActivity
 
         if(switchTo != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.fragment_container, switchTo);
+            ft.replace(R.id.fragment_container, switchTo, "Visible Fragment");
             for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); i++) {
                 getSupportFragmentManager().popBackStackImmediate();
             }
@@ -125,4 +133,16 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    public Fragment getCurrentFragment(){
+        return getSupportFragmentManager().findFragmentByTag("Visible Fragment");
+    }
+
+    public void onLogout(){
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
+        startActivity(intent);
+        finish();
+    }
+
 }
