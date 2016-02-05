@@ -16,7 +16,6 @@
         android:id="@+id/donut_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        custom:donut_progress="30"
         android:layout_centerInParent="true"/>
 
 </RelativeLayout>

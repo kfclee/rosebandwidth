@@ -75,26 +75,21 @@ public class getDataTask extends AsyncTask<String, Void, String>{
             BufferedReader in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
             String n;
             int i = 0;
-            mAPI.mDevices = new ArrayList<Device>();
+            ArrayList<Device> devices = new ArrayList<Device>();
             while ((n = in.readLine()) != null) {
                 System.out.println(n);
                 if(i == 3){
                     List<String> items = Arrays.asList(n.split("\\s*,\\s*"));
-                    String status = items.get(0);
-                    float down = Float.parseFloat((String) items.get(1))*1000;
-                    down += Float.parseFloat((String) items.get(2));
-                    float up = 0;
-
-                    mAPI.mUsage = new Usage(status, up, down);
+                    mAPI.setUsage(parseUsage(items));
                 }
 
                 if (i >= 6) {
                     List<String> items = Arrays.asList(n.split("\\s*,\\s*"));
-                    Device device = new Device(items.get(2), items.get(0),Float.parseFloat((String)items.get(3)),0);
-                    mAPI.mDevices.add(device);
+                    devices.add(parseDevice(items));
                 }
                 i++;
             }
+            mAPI.setDevices(devices);
             in.close();
             for (Device d : mAPI.mDevices) {
                 System.out.println(d.getName() + " " + d.getMacAddress() + " " + d.getUsageAmount());
@@ -104,6 +99,50 @@ public class getDataTask extends AsyncTask<String, Void, String>{
             e.printStackTrace();
         }
         return content;
+    }
+
+    public Device parseDevice(List<String> items) {
+        float download = 0;
+        float upload = 0;
+        int uploadIndex = 4;
+
+        if (items.get(3).contains(".")) {
+            download = Float.parseFloat((String)items.get(3));
+        } else {
+            download = (Float.parseFloat((String)items.get(3)) * 1000) + Float.parseFloat((String)items.get(4));
+            uploadIndex++;
+        }
+
+        if (items.get(uploadIndex).contains(".")) {
+            upload = Float.parseFloat((String)items.get(uploadIndex));
+        } else {
+            upload = (Float.parseFloat((String)items.get(uploadIndex)) * 1000) + Float.parseFloat((String)items.get(uploadIndex + 1));
+        }
+
+        Device device = new Device(items.get(2), items.get(0),download, upload, 0);
+        return device;
+    }
+
+    public Usage parseUsage(List<String> items) {
+        String status = items.get(0);
+        float down = 0;
+        int uploadIndex = 2;
+        if (items.get(1).contains(".")) {
+            down = Float.parseFloat((String) items.get(1));
+        } else {
+            down = (Float.parseFloat((String) items.get(1)) * 1000) + Float.parseFloat((String) items.get(2));
+            uploadIndex++;
+        }
+        float up = 0;
+
+        if (items.get(uploadIndex).contains(".")) {
+            up = Float.parseFloat((String) items.get(uploadIndex));
+        } else {
+            up = (Float.parseFloat((String) items.get(uploadIndex)) * 1000) + Float.parseFloat((String) items.get(uploadIndex + 1));
+        }
+
+        Usage usage = new Usage(status, up, down);
+        return usage;
     }
 
     @Override

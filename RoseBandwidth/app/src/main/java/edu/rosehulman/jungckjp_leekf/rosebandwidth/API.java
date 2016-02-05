@@ -58,9 +58,23 @@ public class API{
         return me;
     }
 
+    public Usage getUsage() {
+        return mUsage;
+    }
+
+    public void setUsage(Usage mUsage) {
+        this.mUsage = mUsage;
+    }
+
+    public ArrayList<Device> getDevices() {
+        return mDevices;
+    }
+
+    public void setDevices(ArrayList<Device> mDevices) {
+        this.mDevices = mDevices;
+    }
 
     public void getData(){
-
         new getDataTask(this).execute();
     }
 }

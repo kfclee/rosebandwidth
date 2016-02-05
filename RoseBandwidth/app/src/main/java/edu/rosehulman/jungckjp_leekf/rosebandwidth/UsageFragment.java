@@ -3,6 +3,7 @@ package edu.rosehulman.jungckjp_leekf.rosebandwidth;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,10 +39,10 @@ public class UsageFragment extends Fragment {
             e.printStackTrace();
         }
 
-        if(mAPI.mUsage != null){
-            int progress = (int)mAPI.mUsage.getDownload()/8000;
+        if(mAPI.getUsage() != null){
+            int progress = (int)mAPI.getUsage().getDownload()/80;
             mDonut.setProgress(progress);
-            mStatus.setText(mAPI.mUsage.getStatus());
+            mStatus.setText(mAPI.getUsage().getStatus());
         }
 
 
