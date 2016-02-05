@@ -1,8 +1,9 @@
-package edu.rosehulman.jungckjp_leekf.rosebandwidth;
+package edu.rosehulman.jungckjp_leekf.rosebandwidth.activities;
 
 
 import android.content.Intent;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
@@ -12,16 +13,26 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import java.io.IOException;
+
+import edu.rosehulman.jungckjp_leekf.rosebandwidth.R;
+import edu.rosehulman.jungckjp_leekf.rosebandwidth.activities.LoginActivity;
+import edu.rosehulman.jungckjp_leekf.rosebandwidth.adapters.DeviceAdapter;
+import edu.rosehulman.jungckjp_leekf.rosebandwidth.fragments.AlarmsFragment;
+import edu.rosehulman.jungckjp_leekf.rosebandwidth.fragments.DevicesFragment;
+import edu.rosehulman.jungckjp_leekf.rosebandwidth.fragments.SettingsFragment;
+import edu.rosehulman.jungckjp_leekf.rosebandwidth.fragments.UsageFragment;
+import edu.rosehulman.jungckjp_leekf.rosebandwidth.utils.API;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private API mAPI;
+    private FloatingActionButton mFab;
 
     private DeviceAdapter mAdapter;
 
@@ -37,6 +48,9 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+
+        mFab = (FloatingActionButton) findViewById(R.id.fab);
+        mFab.setVisibility(View.GONE);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -57,6 +71,10 @@ public class MainActivity extends AppCompatActivity
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public FloatingActionButton getFab() {
+        return mFab;
     }
 
     @Override
@@ -114,6 +132,7 @@ public class MainActivity extends AppCompatActivity
                 switchTo = new SettingsFragment();
                 break;
             case R.id.nav_logout:
+                onLogout();
                 break;
             default:
                 break;

@@ -1,4 +1,4 @@
-package edu.rosehulman.jungckjp_leekf.rosebandwidth;
+package edu.rosehulman.jungckjp_leekf.rosebandwidth.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +15,8 @@ import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
+import edu.rosehulman.jungckjp_leekf.rosebandwidth.R;
+import edu.rosehulman.jungckjp_leekf.rosebandwidth.utils.Constants;
 import edu.rosehulman.rosefire.RosefireAuth;
 
 public class LoginActivity extends AppCompatActivity {

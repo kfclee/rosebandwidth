@@ -1,9 +1,8 @@
-package edu.rosehulman.jungckjp_leekf.rosebandwidth;
+package edu.rosehulman.jungckjp_leekf.rosebandwidth.utils;
 
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
@@ -20,6 +19,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import edu.rosehulman.jungckjp_leekf.rosebandwidth.activities.MainActivity;
+import edu.rosehulman.jungckjp_leekf.rosebandwidth.fragments.DevicesFragment;
+import edu.rosehulman.jungckjp_leekf.rosebandwidth.models.Device;
+import edu.rosehulman.jungckjp_leekf.rosebandwidth.models.Usage;
 import eu.masconsult.android_ntlm.NTLMSchemeFactory;
 
 /**

@@ -1,4 +1,4 @@
-package edu.rosehulman.jungckjp_leekf.rosebandwidth;
+package edu.rosehulman.jungckjp_leekf.rosebandwidth.utils;
 
 /**
  * Created by leekf on 1/23/2016.

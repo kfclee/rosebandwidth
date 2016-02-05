@@ -1,9 +1,9 @@
-package edu.rosehulman.jungckjp_leekf.rosebandwidth;
+package edu.rosehulman.jungckjp_leekf.rosebandwidth.fragments;
 
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +12,10 @@ import android.widget.TextView;
 import com.github.lzyzsd.circleprogress.DonutProgress;
 
 import java.io.IOException;
+
+import edu.rosehulman.jungckjp_leekf.rosebandwidth.utils.API;
+import edu.rosehulman.jungckjp_leekf.rosebandwidth.activities.MainActivity;
+import edu.rosehulman.jungckjp_leekf.rosebandwidth.R;
 
 
 /**
@@ -33,6 +37,10 @@ public class UsageFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_usage, container, false);
         mDonut = (DonutProgress)view.findViewById(R.id.donut_progress);
         mStatus = (TextView)view.findViewById(R.id.usage_status);
+
+        FloatingActionButton fab = ((MainActivity) getActivity()).getFab();
+        fab.setVisibility(View.GONE);
+
         try {
             mAPI = API.getInstance((MainActivity)getActivity());
         } catch (IOException e) {

@@ -1,4 +1,4 @@
-package edu.rosehulman.jungckjp_leekf.rosebandwidth;
+package edu.rosehulman.jungckjp_leekf.rosebandwidth.models;
 
 /**
  * Created by leekf on 1/12/2016.

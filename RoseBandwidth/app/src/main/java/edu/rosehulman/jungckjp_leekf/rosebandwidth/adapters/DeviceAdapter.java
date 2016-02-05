@@ -1,4 +1,4 @@
-package edu.rosehulman.jungckjp_leekf.rosebandwidth;
+package edu.rosehulman.jungckjp_leekf.rosebandwidth.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,7 +9,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.IOException;
-import java.util.ArrayList;
+
+import edu.rosehulman.jungckjp_leekf.rosebandwidth.utils.API;
+import edu.rosehulman.jungckjp_leekf.rosebandwidth.activities.MainActivity;
+import edu.rosehulman.jungckjp_leekf.rosebandwidth.R;
 
 /**
  * Created by leekf on 1/12/2016.
@@ -42,13 +45,13 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.mName.setText(mAPI.mDevices.get(position).getName());
-        holder.mUsage.setText(mAPI.mDevices.get(position).getUsageAmount() + " MB");
+        holder.mName.setText(mAPI.getDevices().get(position).getName());
+        holder.mUsage.setText(mAPI.getDevices().get(position).getUsageAmount() + " MB");
     }
 
     @Override
     public int getItemCount() {
-        return mAPI.mDevices.size();
+        return mAPI.getDevices().size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{

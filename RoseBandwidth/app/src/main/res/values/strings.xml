@@ -14,4 +14,14 @@
     <string name="invalid_password">Password is too short</string>
     <string name="incorrect_password">Password is incorrect</string>
     <string name="action_logout">Log Out</string>
+    <string name="dialog_alarm_add_name_hint">Alarm Name</string>
+    <string name="dialog_alarm_add_amount_hint">Alarm Amount</string>
+    <string name="percentage">Percentage (%)</string>
+    <string name="megabytes">Megabytes (MB)</string>
+    <string name="gigabytes">Gigabytes (GB)</string>
+
+    <string name="dialog_alarm_add_title">Add an Alarm</string>
+    <string name="dialog_alarm_edit_title">Edit an Alarm</string>
+    <string name="remove">Remove</string>
+    <string name="remove_question_format">Remove %s?</string>
 </resources>
