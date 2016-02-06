@@ -42,7 +42,7 @@ public class getDataTask extends AsyncTask<String, Void, String>{
     public getDataTask(API api){
         mAPI = api;
         mActivity = api.mActivity;
-        name = PreferenceManager.getDefaultSharedPreferences(mActivity).getString("username", "");
+        name = PreferenceManager.getDefaultSharedPreferences(mActivity).getString(Constants.USERNAME, "");
         password = PreferenceManager.getDefaultSharedPreferences(mActivity).getString("password", "");
     }
 
@@ -58,7 +58,8 @@ public class getDataTask extends AsyncTask<String, Void, String>{
 
     @Override
     protected String doInBackground(String... params) {
-        String urlString = "https://netreg.rose-hulman.edu/tools/networkUsageData.pl";
+        String urlString = PreferenceManager.getDefaultSharedPreferences(mActivity).getString("data_url", "https://netreg.rose-hulman.edu/tools/networkUsageData.pl");
+//        String urlString = "https://netreg.rose-hulman.edu/tools/networkUsageData.pl";
         String content = "";
         try {
             DefaultHttpClient httpclient = new DefaultHttpClient();

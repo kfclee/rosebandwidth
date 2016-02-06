@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +20,22 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+
 import edu.rosehulman.jungckjp_leekf.rosebandwidth.R;
 import edu.rosehulman.jungckjp_leekf.rosebandwidth.activities.MainActivity;
 import edu.rosehulman.jungckjp_leekf.rosebandwidth.adapters.AlarmsAdapter;
 import edu.rosehulman.jungckjp_leekf.rosebandwidth.models.Alarm;
+import edu.rosehulman.jungckjp_leekf.rosebandwidth.utils.API;
+import edu.rosehulman.jungckjp_leekf.rosebandwidth.utils.Constants;
 
 
 /**
@@ -30,6 +43,7 @@ import edu.rosehulman.jungckjp_leekf.rosebandwidth.models.Alarm;
  */
 public class AlarmsFragment extends Fragment {
     public AlarmsAdapter mAdapter;
+    private API mAPI;
 
     public AlarmsFragment() {
         // Required empty public constructor
@@ -43,6 +57,13 @@ public class AlarmsFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView)inflater.inflate(R.layout.fragment_alerts, container, false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
+
+        try {
+            mAPI = API.getInstance((MainActivity) getActivity());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
         FloatingActionButton fab = ((MainActivity) getActivity()).getFab();
         fab.setOnClickListener(new View.OnClickListener() {
@@ -111,14 +132,16 @@ public class AlarmsFragment extends Fragment {
                         }
 
                         if (alarm == null) {
-                            Alarm alarm1 = new Alarm(alarmName, alarmAmount, true, type);
-                         //   mAdapter.firebasePush(assignmentName, assignmentMaxGrade);
+                            Alarm alarm1 = new Alarm(alarmName, alarmAmount, true, type, mAPI.getCurrentUser());
+                            Log.d(Constants.TAG, alarm1.getName());
+                            Log.d(Constants.TAG, alarm1.getAmount() + " " + alarm1.getType() + " " + alarm1.getUser() + " " + alarm1.isEnabled());
+                            mAdapter.firebasePush(alarm1);
                         } else {
                             alarm.setName(alarmName);
                             alarm.setAmount(alarmAmount);
                             alarm.setEnabled(true);
                             alarm.setType(type);
-                           // mAdapter.firebaseEdit(alarm, assignmentName, assignmentMaxGrade);
+                            mAdapter.firebaseEdit(alarm);
                         }
                         dismiss();
                     }
@@ -148,7 +171,7 @@ public class AlarmsFragment extends Fragment {
                 builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                       // mAdapter.firebaseRemove(alarm);
+                        mAdapter.firebaseRemove(alarm);
                         dismiss();
                     }
                 });

@@ -27,6 +27,7 @@ import edu.rosehulman.jungckjp_leekf.rosebandwidth.fragments.DevicesFragment;
 import edu.rosehulman.jungckjp_leekf.rosebandwidth.fragments.SettingsFragment;
 import edu.rosehulman.jungckjp_leekf.rosebandwidth.fragments.UsageFragment;
 import edu.rosehulman.jungckjp_leekf.rosebandwidth.utils.API;
+import edu.rosehulman.jungckjp_leekf.rosebandwidth.utils.Constants;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -62,11 +63,17 @@ public class MainActivity extends AppCompatActivity
             ft.commit();
         }
 
-        PreferenceManager.getDefaultSharedPreferences(this).edit().putString("password",getIntent().getStringExtra("password")).commit();
-        PreferenceManager.getDefaultSharedPreferences(this).edit().putString("username", getIntent().getStringExtra("username")).commit();
+        String username = "";
+
+        if (getIntent().getExtras() != null) {
+            PreferenceManager.getDefaultSharedPreferences(this).edit().putString("password",getIntent().getStringExtra("password")).commit();
+            username = getIntent().getStringExtra(Constants.USERNAME);
+            PreferenceManager.getDefaultSharedPreferences(this).edit().putString(Constants.USERNAME, username).commit();
+        }
 
         try {
             mAPI = API.createNew(this);
+            mAPI.setCurrentUser(username);
             mAPI.getData();
         } catch (IOException e) {
             e.printStackTrace();
