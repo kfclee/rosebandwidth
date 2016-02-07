@@ -24,4 +24,5 @@
     <string name="dialog_alarm_edit_title">Edit an Alarm</string>
     <string name="remove">Remove</string>
     <string name="remove_question_format">Remove %s?</string>
+    <string name="action_refresh">Refresh</string>
 </resources>

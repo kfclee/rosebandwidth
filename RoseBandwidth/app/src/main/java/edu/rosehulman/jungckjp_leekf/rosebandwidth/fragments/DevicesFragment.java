@@ -6,7 +6,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -15,6 +17,7 @@ import java.io.IOException;
 import edu.rosehulman.jungckjp_leekf.rosebandwidth.R;
 import edu.rosehulman.jungckjp_leekf.rosebandwidth.activities.MainActivity;
 import edu.rosehulman.jungckjp_leekf.rosebandwidth.adapters.DeviceAdapter;
+import edu.rosehulman.jungckjp_leekf.rosebandwidth.utils.Constants;
 
 
 /**
@@ -51,6 +54,18 @@ public class DevicesFragment extends Fragment {
 
         // Inflate the layout for this fragment
         return recyclerView;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.action_refresh){
+            mAdapter.notifyDataSetChanged();
+//            getCurrentFragment();
+//            Log.d(Constants.TAG, "changed");
+            return true;
+        }
+        return true;
     }
 
     public DeviceAdapter getAdapter(){

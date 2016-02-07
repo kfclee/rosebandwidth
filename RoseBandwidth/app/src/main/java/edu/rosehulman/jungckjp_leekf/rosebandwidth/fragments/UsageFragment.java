@@ -13,6 +13,7 @@ import com.github.lzyzsd.circleprogress.DonutProgress;
 
 import java.io.IOException;
 
+import edu.rosehulman.jungckjp_leekf.rosebandwidth.adapters.DeviceAdapter;
 import edu.rosehulman.jungckjp_leekf.rosebandwidth.utils.API;
 import edu.rosehulman.jungckjp_leekf.rosebandwidth.activities.MainActivity;
 import edu.rosehulman.jungckjp_leekf.rosebandwidth.R;
@@ -55,6 +56,14 @@ public class UsageFragment extends Fragment {
 
 
         return view;
+    }
+
+    public void notifyDataSetChanged() {
+        if(mAPI.getUsage() != null){
+            int progress = (int)mAPI.getUsage().getDownload()/80;
+            mDonut.setProgress(progress);
+            mStatus.setText(mAPI.getUsage().getStatus());
+        }
     }
 
 }

@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity
     private API mAPI;
     private FloatingActionButton mFab;
 
-    private DeviceAdapter mAdapter;
+//    private Adapter mCurrentAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity
         if (savedInstanceState == null) {
 
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.add(R.id.fragment_container, new UsageFragment());
+            ft.add(R.id.fragment_container, new UsageFragment(), "Visible Fragment");
             ft.commit();
         }
 
@@ -111,7 +111,13 @@ public class MainActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
-        }else if(id == R.id.action_logout){
+        }else if(id == R.id.action_refresh){
+            mAPI.getData();
+//            getCurrentFragment();
+            return false;
+        }
+
+        else if(id == R.id.action_logout){
             onLogout();
             return true;
         }

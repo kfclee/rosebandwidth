@@ -21,6 +21,7 @@ import java.util.List;
 
 import edu.rosehulman.jungckjp_leekf.rosebandwidth.activities.MainActivity;
 import edu.rosehulman.jungckjp_leekf.rosebandwidth.fragments.DevicesFragment;
+import edu.rosehulman.jungckjp_leekf.rosebandwidth.fragments.UsageFragment;
 import edu.rosehulman.jungckjp_leekf.rosebandwidth.models.Device;
 import edu.rosehulman.jungckjp_leekf.rosebandwidth.models.Usage;
 import eu.masconsult.android_ntlm.NTLMSchemeFactory;
@@ -151,15 +152,17 @@ public class getDataTask extends AsyncTask<String, Void, String>{
 
     @Override
     public void onPostExecute(String result){
+        super.onPostExecute(result);
+
         Fragment f = mActivity.getCurrentFragment();
         if(f != null){
             if(f.getClass().equals(DevicesFragment.class)){
                 DevicesFragment df = (DevicesFragment)mActivity.getCurrentFragment();
                 df.getAdapter().notifyDataSetChanged();
+            } else if(f.getClass().equals(UsageFragment.class)){
+                UsageFragment uf = (UsageFragment)mActivity.getCurrentFragment();
+                uf.notifyDataSetChanged();
             }
-            //TODO: add other fragments
         }
-
-        super.onPostExecute(result);
     }
 }

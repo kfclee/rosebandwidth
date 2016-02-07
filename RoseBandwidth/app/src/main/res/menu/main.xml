@@ -3,6 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_refresh"
+        android:orderInCategory="100"
+        android:title="@string/action_refresh"
+        app:showAsAction="always" />
+
+    <!--android:icon="@android:drawable/ic_menu_refresh"-->
+
+    <item
     android:id="@+id/action_settings"
     android:orderInCategory="100"
     android:title="@string/action_settings"
