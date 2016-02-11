@@ -15,8 +15,9 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:layout_width="92dp"
-            android:layout_height="92dp"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:padding="15dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:id="@+id/device_image"/>
@@ -25,6 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="New Text"
+            android:paddingTop="15dp"
             android:id="@+id/device_name"
             android:layout_gravity="center_horizontal"
             android:layout_toRightOf="@id/device_image"
