@@ -3,43 +3,49 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_centerInParent="true"
     android:layout_height="match_parent">
-
     <TableLayout
         android:layout_width="match_parent"
+        android:gravity="center_horizontal"
         android:layout_height="match_parent">
         <TableRow>
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight = "1"
                 android:src="@drawable/iphone"
                 android:id="@+id/iPhoneButton" />
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight = "1"
                 android:src="@drawable/laptop"
                 android:id="@+id/laptopButton" />
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/iphone"
-                android:id="@+id/iPhoneButton3" />
+                android:layout_weight = "1"
+                android:src="@drawable/desktop"
+                android:id="@+id/desktopButton" />
         </TableRow>
         <TableRow>
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/iphone"
-                android:id="@+id/iPhoneButton4" />
+                android:layout_weight = "1"
+                android:src="@drawable/ipad"
+                android:id="@+id/ipadButton" />
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/laptop"
-                android:id="@+id/laptopButton5" />
+                android:layout_weight = "1"
+                android:src="@drawable/ps4"
+                android:id="@+id/ps4Button" />
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/iphone"
-                android:id="@+id/iPhoneButton6" />
+                android:layout_weight = "1"
+                android:src="@drawable/xbox"
+                android:id="@+id/xboxButton" />
         </TableRow>
     </TableLayout>
 </LinearLayout>

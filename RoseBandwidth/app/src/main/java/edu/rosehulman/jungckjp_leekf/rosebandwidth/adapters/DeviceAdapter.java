@@ -57,7 +57,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
 
         Query query = mDevicesRef.orderByChild("user").equalTo(mAPI.getCurrentUser());
         query.addChildEventListener(new DevicesChildEventListener());
-        
+
         notifyDataSetChanged();
     }
 
@@ -84,10 +84,6 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
             if (deviceCustomization.getImageResId() != 0) {
                 holder.mImageView.setImageDrawable(mContext.getResources().getDrawable(deviceCustomization.getImageResId()));
             }
-        } else {
-//            DeviceCustomization customization = new DeviceCustomization(key, "", device.getImageRes(), mAPI.getCurrentUser());
-//            firebasePush(customization);
-//            holder.mName.setText(mAPI.getDevices().get(position).getName());
         }
 
         holder.mUsage.setText(mAPI.getDevices().get(position).getUsageAmount() + " MB");
@@ -143,14 +139,6 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
                     }
                 });
                 builder.setNegativeButton(android.R.string.cancel, null);
-//                if (deviceCustomization != null) {
-//                    builder.setNeutralButton(R.string.remove, new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            showDeleteConfirmationDialog(course);
-//                        }
-//                    });
-//                }
                 return builder.create();
             }
         };
@@ -170,13 +158,15 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
                 builder.setView(view);
                 final ImageButton iPhoneButton = (ImageButton) view.findViewById(R.id.iPhoneButton);
                 final ImageButton laptopButton = (ImageButton) view.findViewById(R.id.laptopButton);
+                final ImageButton desktopButton = (ImageButton) view.findViewById(R.id.desktopButton);
+                final ImageButton iPadButton = (ImageButton) view.findViewById(R.id.ipadButton);
+                final ImageButton ps4Button = (ImageButton) view.findViewById(R.id.ps4Button);
+                final ImageButton xboxButton = (ImageButton) view.findViewById(R.id.xboxButton);
 
                 String key = getDeviceKey(device);
 
                 Log.d(Constants.TAG, key);
                 final DeviceCustomization deviceCustomization = mCustomizations.get(key);
-
-                ButtonOnClickListener buttonOnClickListener = new ButtonOnClickListener();
 
                 iPhoneButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -196,33 +186,41 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
                     }
                 });
 
-//                if (!deviceCustomization.getImageResId().equals("")) {
-//                    deviceNicknameEditText.setText(deviceCustomization.getNickname());
-//                } else {
-//                    deviceNicknameEditText.setText(device.getName());
-//                }
+                desktopButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        deviceCustomization.setImageResId(R.drawable.desktop);
+                        firebaseEdit(deviceCustomization, deviceCustomization.getUid());
+                        dismiss();
+                    }
+                });
 
-//                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        int imgRes = R.drawable.iphone;
-//                        deviceCustomization.setImageResId(imgRes);
-//                        if (mCustomizations.get(deviceCustomization.getKey()) == null) {
-//                            firebasePush(deviceCustomization);
-//                        } else {
-//                            firebaseEdit(deviceCustomization, deviceCustomization.getUid());
-//                        }
-//                    }
-//                });
-//                builder.setNegativeButton(android.R.string.cancel, null);
-//                if (deviceCustomization != null) {
-//                    builder.setNeutralButton(R.string.remove, new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            showDeleteConfirmationDialog(course);
-//                        }
-//                    });
-//                }
+                iPadButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        deviceCustomization.setImageResId(R.drawable.ipad);
+                        firebaseEdit(deviceCustomization, deviceCustomization.getUid());
+                        dismiss();
+                    }
+                });
+
+                ps4Button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        deviceCustomization.setImageResId(R.drawable.ps4);
+                        firebaseEdit(deviceCustomization, deviceCustomization.getUid());
+                        dismiss();
+                    }
+                });
+
+                xboxButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        deviceCustomization.setImageResId(R.drawable.xbox);
+                        firebaseEdit(deviceCustomization, deviceCustomization.getUid());
+                        dismiss();
+                    }
+                });
                 return builder.create();
             }
         };
@@ -312,13 +310,6 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
         public void onCancelled(FirebaseError firebaseError) {
             Log.e("TAG", "onCancelled. Error: " + firebaseError.getMessage());
 
-        }
-    }
-
-    private class ButtonOnClickListener implements DialogInterface.OnClickListener {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-//            mContext.getResources().getDrawable(deviceCustomization.getImageResId())
         }
     }
 }
