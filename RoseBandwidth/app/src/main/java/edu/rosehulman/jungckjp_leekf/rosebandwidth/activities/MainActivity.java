@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity
 
     private API mAPI;
     private FloatingActionButton mFab;
+    private DeviceAdapter mDeviceAdapter;
 
 //    private Adapter mCurrentAdapter;
 
@@ -75,9 +76,14 @@ public class MainActivity extends AppCompatActivity
             mAPI = API.createNew(this);
             mAPI.setCurrentUser(username);
             mAPI.getData();
+            mDeviceAdapter = new DeviceAdapter(this);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public DeviceAdapter getDeviceAdapter() {
+        return mDeviceAdapter;
     }
 
     public FloatingActionButton getFab() {

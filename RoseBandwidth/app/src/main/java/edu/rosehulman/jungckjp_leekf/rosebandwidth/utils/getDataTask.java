@@ -124,7 +124,7 @@ public class getDataTask extends AsyncTask<String, Void, String>{
             upload = (Float.parseFloat((String)items.get(uploadIndex)) * 1000) + Float.parseFloat((String)items.get(uploadIndex + 1));
         }
 
-        Device device = new Device(items.get(2), items.get(0),download, upload, 0);
+        Device device = new Device(items.get(2), items.get(0),download, upload, "");
         return device;
     }
 

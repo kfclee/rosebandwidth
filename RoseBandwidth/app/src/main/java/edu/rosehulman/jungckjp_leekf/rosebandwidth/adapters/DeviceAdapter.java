@@ -40,14 +40,14 @@ import edu.rosehulman.jungckjp_leekf.rosebandwidth.utils.Constants;
 public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder> {
     private final Firebase mDevicesRef;
     private Context mContext;
-    private RecyclerView mRecyclerView;
+//    private RecyclerView mRecyclerView;
     private API mAPI;
 
     private HashMap<String, DeviceCustomization> mCustomizations;
 
-    public DeviceAdapter(Context context, RecyclerView rView) throws IOException {
+    public DeviceAdapter(Context context) throws IOException {
         mContext = context;
-        mRecyclerView = rView;
+//        mRecyclerView = rView;
 
         mAPI = API.getInstance((MainActivity)context);
 
@@ -57,7 +57,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
 
         Query query = mDevicesRef.orderByChild("user").equalTo(mAPI.getCurrentUser());
         query.addChildEventListener(new DevicesChildEventListener());
-
+        
         notifyDataSetChanged();
     }
 
@@ -72,6 +72,8 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
         Device device = mAPI.getDevices().get(position);
         String key = getDeviceKey(device);
 
+        if (mCustomizations.size() > 0) {
+
         DeviceCustomization deviceCustomization = mCustomizations.get(key);
 
         if (deviceCustomization != null) {
@@ -81,12 +83,21 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
                 holder.mName.setText(deviceCustomization.getNickname());
             }
 
-            if (deviceCustomization.getImageResId() != 0) {
-                holder.mImageView.setImageDrawable(mContext.getResources().getDrawable(deviceCustomization.getImageResId()));
+            if (!deviceCustomization.getImageResId().equals("")) {
+                String imageRes = deviceCustomization.getImageResId();
+                int resourceID = mContext.getResources().getIdentifier(imageRes, "drawable", mContext.getPackageName());
+                holder.mImageView.setImageDrawable(mContext.getResources().getDrawable(resourceID));
+            } else {
+                holder.mImageView.setImageResource(R.drawable.laptop);
             }
+        } else {
+            DeviceCustomization customization = new DeviceCustomization(key, "", device.getImageRes(), mAPI.getCurrentUser());
+            firebasePush(customization);
+            holder.mName.setText(mAPI.getDevices().get(position).getName());
         }
 
         holder.mUsage.setText(mAPI.getDevices().get(position).getUsageAmount() + " MB");
+        }
     }
 
     public void firebasePush(DeviceCustomization deviceCustomization) {
@@ -139,6 +150,14 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
                     }
                 });
                 builder.setNegativeButton(android.R.string.cancel, null);
+//                if (deviceCustomization != null) {
+//                    builder.setNeutralButton(R.string.remove, new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            showDeleteConfirmationDialog(course);
+//                        }
+//                    });
+//                }
                 return builder.create();
             }
         };
@@ -166,12 +185,13 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
                 String key = getDeviceKey(device);
 
                 Log.d(Constants.TAG, key);
+
                 final DeviceCustomization deviceCustomization = mCustomizations.get(key);
 
                 iPhoneButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        deviceCustomization.setImageResId(R.drawable.iphone);
+                        deviceCustomization.setImageResId("iphone");
                         firebaseEdit(deviceCustomization, deviceCustomization.getUid());
                         dismiss();
                     }
@@ -180,7 +200,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
                 laptopButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        deviceCustomization.setImageResId(R.drawable.laptop);
+                        deviceCustomization.setImageResId("laptop");
                         firebaseEdit(deviceCustomization, deviceCustomization.getUid());
                         dismiss();
                     }
@@ -189,7 +209,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
                 desktopButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        deviceCustomization.setImageResId(R.drawable.desktop);
+                        deviceCustomization.setImageResId("desktop");
                         firebaseEdit(deviceCustomization, deviceCustomization.getUid());
                         dismiss();
                     }
@@ -198,7 +218,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
                 iPadButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        deviceCustomization.setImageResId(R.drawable.ipad);
+                        deviceCustomization.setImageResId("ipad");
                         firebaseEdit(deviceCustomization, deviceCustomization.getUid());
                         dismiss();
                     }
@@ -207,7 +227,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
                 ps4Button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        deviceCustomization.setImageResId(R.drawable.ps4);
+                        deviceCustomization.setImageResId("ps4");
                         firebaseEdit(deviceCustomization, deviceCustomization.getUid());
                         dismiss();
                     }
@@ -216,7 +236,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
                 xboxButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        deviceCustomization.setImageResId(R.drawable.xbox);
+                        deviceCustomization.setImageResId("xbox");
                         firebaseEdit(deviceCustomization, deviceCustomization.getUid());
                         dismiss();
                     }
@@ -226,6 +246,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
         };
         df.show(((MainActivity) mContext).getSupportFragmentManager(), "editname");
     }
+
 
     @NonNull
     private String getDeviceKey(Device device) {
@@ -310,6 +331,13 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
         public void onCancelled(FirebaseError firebaseError) {
             Log.e("TAG", "onCancelled. Error: " + firebaseError.getMessage());
 
+        }
+    }
+
+    private class ButtonOnClickListener implements DialogInterface.OnClickListener {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+//            mContext.getResources().getDrawable(deviceCustomization.getImageResId())
         }
     }
 }

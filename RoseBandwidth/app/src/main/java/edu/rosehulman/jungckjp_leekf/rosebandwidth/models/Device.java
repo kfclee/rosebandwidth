@@ -8,9 +8,9 @@ public class Device {
     private String macAddress;
     private float usageAmount;
     private float uploadAmount;
-    private int imageRes;
+    private String imageRes;
 
-    public Device(String name, String macAddress, float usageAmount, float uploadAmount, int imageRes) {
+    public Device(String name, String macAddress, float usageAmount, float uploadAmount, String imageRes) {
         this.name = name;
         this.macAddress = macAddress;
         this.usageAmount = usageAmount;
@@ -42,11 +42,11 @@ public class Device {
         this.usageAmount = usageAmount;
     }
 
-    public int getImageRes() {
+    public String getImageRes() {
         return imageRes;
     }
 
-    public void setImageRes(int imageRes) {
+    public void setImageRes(String imageRes) {
         this.imageRes = imageRes;
     }
 

@@ -45,11 +45,7 @@ public class DevicesFragment extends Fragment {
         FloatingActionButton fab = ((MainActivity) getActivity()).getFab();
         fab.setVisibility(View.GONE);
 
-        try {
-            mAdapter = new DeviceAdapter(getContext(), recyclerView);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        mAdapter = ((MainActivity) getActivity()).getDeviceAdapter();
         recyclerView.setAdapter(mAdapter);
 
         // Inflate the layout for this fragment

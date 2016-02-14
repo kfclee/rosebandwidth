@@ -10,7 +10,7 @@ import java.util.Comparator;
 public class DeviceCustomization {
     private String uid;
     private String nickname;
-    private int imageResId;
+    private String imageResId;
     private String user;
 
     @JsonIgnore
@@ -20,7 +20,7 @@ public class DeviceCustomization {
         // Required Empty Constructor
     }
 
-    public DeviceCustomization(String uid, String nickname, int imageResId, String user) {
+    public DeviceCustomization(String uid, String nickname, String imageResId, String user) {
         this.uid = uid;
         this.nickname = nickname;
         this.imageResId = imageResId;
@@ -51,11 +51,11 @@ public class DeviceCustomization {
         this.nickname = nickname;
     }
 
-    public int getImageResId() {
+    public String getImageResId() {
         return imageResId;
     }
 
-    public void setImageResId(int imageResId) {
+    public void setImageResId(String imageResId) {
         this.imageResId = imageResId;
     }
 
