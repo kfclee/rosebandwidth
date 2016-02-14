@@ -26,6 +26,7 @@ import edu.rosehulman.jungckjp_leekf.rosebandwidth.fragments.AlarmsFragment;
 import edu.rosehulman.jungckjp_leekf.rosebandwidth.fragments.DevicesFragment;
 import edu.rosehulman.jungckjp_leekf.rosebandwidth.fragments.SettingsFragment;
 import edu.rosehulman.jungckjp_leekf.rosebandwidth.fragments.UsageFragment;
+import edu.rosehulman.jungckjp_leekf.rosebandwidth.services.AlarmService;
 import edu.rosehulman.jungckjp_leekf.rosebandwidth.utils.API;
 import edu.rosehulman.jungckjp_leekf.rosebandwidth.utils.Constants;
 
@@ -80,6 +81,19 @@ public class MainActivity extends AppCompatActivity
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        Intent intent = new Intent(MainActivity.this, AlarmService.class);
+
+        String name = PreferenceManager.getDefaultSharedPreferences(this).getString(Constants.USERNAME, "");
+        String password = PreferenceManager.getDefaultSharedPreferences(this).getString("password", "");
+        String urlString = PreferenceManager.getDefaultSharedPreferences(this).getString("data_url", "https://netreg.rose-hulman.edu/tools/networkUsageData.pl");
+
+        intent.putExtra("url", urlString);
+        intent.putExtra("name", name);
+        intent.putExtra("password", password);
+
+        startService(intent);
+
     }
 
     public DeviceAdapter getDeviceAdapter() {

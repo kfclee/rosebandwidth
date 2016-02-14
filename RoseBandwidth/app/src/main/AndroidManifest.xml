@@ -4,12 +4,24 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
+
+        <receiver android:name=".services.AlarmBroadcastReceiver">
+            <intent-filter >
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
+        <!--<service android:name=".services.AlarmService"-->
+        <!--android:enabled="true"/>-->
+        <service android:name="edu.rosehulman.jungckjp_leekf.rosebandwidth.services.AlarmService"></service>
+
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/app_name"
