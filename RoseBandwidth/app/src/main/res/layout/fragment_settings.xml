@@ -1,12 +1,24 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.SettingsFragment">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Settings" />
+    <!--<TextView-->
+        <!--android:id="@+id/notifications"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Alarm Notifications"-->
+        <!--android:textSize="20dp"-->
+        <!--android:layout_margin="10dp"/>-->
 
-</FrameLayout>
+    <Switch
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Alarm Notifications"
+        android:id="@+id/enable_alarms"
+        android:layout_margin="10dp"
+        android:layout_alignParentRight="true"
+        android:textSize="20dp"/>
+
+</RelativeLayout>

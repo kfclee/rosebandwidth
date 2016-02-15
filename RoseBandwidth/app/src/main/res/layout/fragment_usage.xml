@@ -6,16 +6,22 @@
     tools:context=".fragments.UsageFragment">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/donut_progress"
+        android:layout_marginBottom="20dp"
         android:id="@+id/usage_status"
-        android:text="Usage" />
+        android:text="Usage"
+        android:layout_centerHorizontal="true"
+        android:textSize="30dp"/>
 
     <com.github.lzyzsd.circleprogress.DonutProgress
         android:layout_marginLeft="50dp"
         android:id="@+id/donut_progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"/>
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+         />
 
 </RelativeLayout>

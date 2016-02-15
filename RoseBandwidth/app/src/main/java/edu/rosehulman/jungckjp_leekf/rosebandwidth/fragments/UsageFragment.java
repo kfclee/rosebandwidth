@@ -54,6 +54,13 @@ public class UsageFragment extends Fragment {
             mStatus.setText(mAPI.getUsage().getStatus());
         }
 
+        if(mDonut.getProgress() > 90){
+            mDonut.setFinishedStrokeColor(R.color.red);
+            mDonut.setTextColor(R.color.red);
+        }else{
+            mDonut.setFinishedStrokeColor(R.color.green);
+            mDonut.setTextColor(R.color.green);
+        }
 
         return view;
     }
