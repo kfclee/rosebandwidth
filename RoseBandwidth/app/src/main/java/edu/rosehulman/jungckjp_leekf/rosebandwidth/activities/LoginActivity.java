@@ -4,16 +4,30 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+
+import java.util.ArrayList;
 
 import edu.rosehulman.jungckjp_leekf.rosebandwidth.R;
 import edu.rosehulman.jungckjp_leekf.rosebandwidth.utils.Constants;
@@ -25,6 +39,10 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mPasswordView;
     private EditText mEmailView;
     private View mProgressSpinner;
+    private Button mLoginButton;
+    private boolean layoutShiftedUp;
+    private RelativeLayout mView;
+    private ArrayList<View> mLayoutViews;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +53,8 @@ public class LoginActivity extends AppCompatActivity {
             Firebase.setAndroidContext(this);
         }
 
-        Button button = (Button) findViewById(R.id.login_button);
+        mView = (RelativeLayout) findViewById(R.id.login_view);
+        mLoginButton = (Button) findViewById(R.id.login_button);
         mEmailView = (EditText) findViewById(R.id.username_text);
         mEmailView.setText("");
         mPasswordView = (EditText) findViewById(R.id.password_text);
@@ -43,12 +62,102 @@ public class LoginActivity extends AppCompatActivity {
         mProgressSpinner = findViewById(R.id.login_progress);
         mLoggingIn = false;
 
-        button.setOnClickListener(new View.OnClickListener() {
+        mEmailView.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // TODO Auto-generated method stub
+                if (s.length() > 0 && s.subSequence(s.length() - 1, s.length()).toString().equalsIgnoreCase("\n")) {
+                    mEmailView.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
+                    mEmailView.clearFocus();
+                    mPasswordView.requestFocus();
+                }
+            }
+        });
+
+        mPasswordView.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // TODO Auto-generated method stub
+                Log.d(Constants.TAG, "Enter clicked");
+                if (s.length() > 0 && s.subSequence(s.length() - 1, s.length()).toString().equalsIgnoreCase("\n")) {
+                    mPasswordView.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
+                    mPasswordView.clearFocus();
+                    mLoginButton.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mLoginButton.performClick();
+                        }
+                    });
+                }
+            }
+        });
+
+        mEmailView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                updateLoginLayout(true);
+                    return false;
+                }
+            }
+
+            );
+            mPasswordView.setOnTouchListener(new View.OnTouchListener()
+
+            {
+                @Override
+                public boolean onTouch (View v, MotionEvent event){
+                updateLoginLayout(true);
+                return false;
+            }
+            }
+
+            );
+            mView.setOnTouchListener(new View.OnTouchListener()
+
+            {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    updateLoginLayout(false);
+                    return true;
+                }
+            });
+        mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 loginWithRosefire();
+                updateLoginLayout(false);
             }
         });
+
+        mLayoutViews = new ArrayList<View>();
+        mLayoutViews.add(mEmailView);
+        mLayoutViews.add(mPasswordView);
+        mLayoutViews.add(mLoginButton);
+
+        mEmailView.clearFocus();
+        hideKeyboard();
     }
 
     private class MyAuthResultHandler implements Firebase.AuthResultHandler {
@@ -61,6 +170,25 @@ public class LoginActivity extends AppCompatActivity {
         public void onAuthenticationError(FirebaseError firebaseError) {
             Log.e(Constants.TAG, "onAuthenticationError: " + firebaseError.getMessage());
             mLoggingIn = false;
+        }
+    }
+
+    private void updateLoginLayout(boolean shiftLayoutUp) {
+        int shiftAmount = 0;
+
+        if (shiftLayoutUp && !layoutShiftedUp) {
+            shiftAmount = -200;
+            layoutShiftedUp = true;
+        } else if (!shiftLayoutUp && layoutShiftedUp) {
+            shiftAmount = 200;
+            layoutShiftedUp = false;
+            hideKeyboard();
+        } else {
+            return;
+        }
+
+        for (View v : mLayoutViews) {
+            v.animate().x(v.getX()).y(v.getY() + shiftAmount).setDuration(500).start();
         }
     }
 
@@ -126,6 +254,26 @@ public class LoginActivity extends AppCompatActivity {
         InputMethodManager imm = (InputMethodManager) this.getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mEmailView.getWindowToken(), 0);
+
+//        releaseFocus(mEmailView);
+//        releaseFocus(mPasswordView);
+    }
+
+    public static void releaseFocus(View view) {
+        ViewParent parent = view.getParent();
+        ViewGroup group = null;
+        View child = null;
+        while (parent != null) {
+            if (parent instanceof ViewGroup) {
+                group = (ViewGroup) parent;
+                for (int i = 0; i < group.getChildCount(); i++) {
+                    child = group.getChildAt(i);
+                    if(child != view && child.isFocusable())
+                        child.requestFocus();
+                }
+            }
+            parent = parent.getParent();
+        }
     }
 
     private void showProgress(boolean show) {
