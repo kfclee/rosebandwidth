@@ -1,7 +1,10 @@
 package edu.rosehulman.jungckjp_leekf.rosebandwidth.activities;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -19,6 +22,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -43,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
     private boolean layoutShiftedUp;
     private RelativeLayout mView;
     private ArrayList<View> mLayoutViews;
+    private ImageView mLogoView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
         mPasswordView = (EditText) findViewById(R.id.password_text);
         mPasswordView.setText("");
         mProgressSpinner = findViewById(R.id.login_progress);
+        mLogoView = (ImageView) findViewById(R.id.logo);
         mLoggingIn = false;
 
         mEmailView.addTextChangedListener(new TextWatcher() {
@@ -85,53 +91,38 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        mPasswordView.addTextChangedListener(new TextWatcher() {
-
+        mPasswordView.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // TODO Auto-generated method stub
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count,
-                                          int after) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                // TODO Auto-generated method stub
-                Log.d(Constants.TAG, "Enter clicked");
-                if (s.length() > 0 && s.subSequence(s.length() - 1, s.length()).toString().equalsIgnoreCase("\n")) {
-                    mPasswordView.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
-                    mPasswordView.clearFocus();
-                    mLoginButton.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            mLoginButton.performClick();
-                        }
-                    });
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                    if (event.getAction() == KeyEvent.ACTION_UP) {
+                        mLoginButton.performClick();
+                        mPasswordView.clearFocus();
+                    }
+                    return true;
                 }
+                return false;
             }
         });
 
         mEmailView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                updateLoginLayout(true);
-                    return false;
-                }
-            }
+                                          @Override
+                                          public boolean onTouch(View v, MotionEvent event) {
+                                              updateLoginLayout(true);
+                                              return false;
+                                          }
+                                      }
 
-            );
+        );
             mPasswordView.setOnTouchListener(new View.OnTouchListener()
 
-            {
-                @Override
-                public boolean onTouch (View v, MotionEvent event){
-                updateLoginLayout(true);
-                return false;
-            }
-            }
+                                             {
+                                                 @Override
+                                                 public boolean onTouch(View v, MotionEvent event) {
+                                                     updateLoginLayout(true);
+                                                     return false;
+                                                 }
+                                             }
 
             );
             mView.setOnTouchListener(new View.OnTouchListener()
@@ -170,6 +161,14 @@ public class LoginActivity extends AppCompatActivity {
         public void onAuthenticationError(FirebaseError firebaseError) {
             Log.e(Constants.TAG, "onAuthenticationError: " + firebaseError.getMessage());
             mLoggingIn = false;
+            animateLogin(false);
+            AlertDialog error = new AlertDialog.Builder(LoginActivity.this).setCancelable(false).setTitle("Authentication Failed").setIcon(android.R.drawable.ic_dialog_alert).setMessage("Please check your username/password combination.").setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            }).create();
+            error.show();
         }
     }
 
@@ -179,9 +178,11 @@ public class LoginActivity extends AppCompatActivity {
         if (shiftLayoutUp && !layoutShiftedUp) {
             shiftAmount = -200;
             layoutShiftedUp = true;
+            mLogoView.animate().alpha(0.0f).setDuration(500).start();
         } else if (!shiftLayoutUp && layoutShiftedUp) {
             shiftAmount = 200;
             layoutShiftedUp = false;
+            mLogoView.animate().alpha(1.0f).setDuration(500).start();
             hideKeyboard();
         } else {
             return;
@@ -246,8 +247,23 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onRosefireLogin(String email, String password) {
         Firebase firebase = new Firebase(Constants.FIREBASE_URL);
+        animateLogin(true);
         RosefireAuth roseFireAuth = new RosefireAuth(firebase, Constants.ROSEFIRE_KEY);
         roseFireAuth.authWithRoseHulman(email, password, new MyAuthResultHandler());
+    }
+
+    private void animateLogin(boolean inOrOut) {
+        float alpha = 0.2f;
+        if (inOrOut) {
+            showProgress(true);
+        } else {
+            showProgress(false);
+            alpha = 1.0f;
+        }
+        for (View v : mLayoutViews) {
+            v.animate().alpha(alpha).start();
+        }
+
     }
 
     private void hideKeyboard() {

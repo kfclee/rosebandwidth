@@ -17,5 +17,12 @@
         android:layout_height="70dp"
         android:paddingTop="10dp"
         android:src="@drawable/ic_logo_trans" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="RoseBandwidth"
+        android:paddingTop="10dp"
+        android:textSize="20dp"
+        android:textColor="@android:color/white"/>
 
 </LinearLayout>

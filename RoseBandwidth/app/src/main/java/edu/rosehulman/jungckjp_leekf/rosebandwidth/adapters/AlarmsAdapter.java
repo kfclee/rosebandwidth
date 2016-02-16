@@ -53,7 +53,6 @@ public class AlarmsAdapter  extends RecyclerView.Adapter<AlarmsAdapter.ViewHolde
             e.printStackTrace();
         }
 
-//        mUsersRef = new Firebase(Constants.USERS_PATH);
         mAlarmsRef = new Firebase(Constants.ALARMS_PATH);
 
         Query query = mAlarmsRef.orderByChild("user").equalTo(mAPI.getCurrentUser());

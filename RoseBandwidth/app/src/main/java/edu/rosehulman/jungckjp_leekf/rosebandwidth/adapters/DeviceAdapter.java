@@ -98,6 +98,11 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
 
         holder.mUsage.setText(mAPI.getDevices().get(position).getUsageAmount() + " MB");
         }
+        else {
+            DeviceCustomization customization = new DeviceCustomization(key, "", device.getImageRes(), mAPI.getCurrentUser());
+            firebasePush(customization);
+            holder.mName.setText(mAPI.getDevices().get(position).getName());
+        }
     }
 
     public void firebasePush(DeviceCustomization deviceCustomization) {
