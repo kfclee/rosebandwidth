@@ -14,4 +14,5 @@ public class Constants {
     public static final String ALARMS_PATH = FIREBASE_URL + "/alarms";
     public static final String DEVICES_PATH = FIREBASE_URL + "/devices";
     public static final String CONSTANTS_PATH = FIREBASE_URL + "/constants";
+    public static final int ALARM_CODE = 425;
 }
