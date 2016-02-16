@@ -119,7 +119,15 @@ public class AlarmsFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String alarmName = alarmNameEditText.getText().toString();
-                        float alarmAmount = Float.parseFloat(alarmAmountEditText.getText().toString());
+                        if(alarmName.equals("")){
+                            alarmName = "New Alarm";
+                        }
+
+                        float alarmAmount = 0;
+                        if(!alarmAmountEditText.getText().toString().equals("")){
+                            alarmAmount = Float.parseFloat(alarmAmountEditText.getText().toString());
+                        }
+
                         int selectedId = radioGroup.getCheckedRadioButtonId();
                         int type = 0;
 
