@@ -12,15 +12,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
 
-        <receiver android:name=".services.AlarmBroadcastReceiver">
-            <intent-filter >
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-            </intent-filter>
-        </receiver>
+        <!--<receiver android:name=".services.AlarmBroadcastReceiver">-->
+            <!--<intent-filter >-->
+                <!--<action android:name="android.intent.action.BOOT_COMPLETED"/>-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
+
+        <service android:name=".services.AlarmService" />
+        <receiver android:name=".services.AlarmBroadcastReceiver"></receiver>
 
         <!--<service android:name=".services.AlarmService"-->
         <!--android:enabled="true"/>-->
-        <service android:name="edu.rosehulman.jungckjp_leekf.rosebandwidth.services.AlarmService"></service>
+        <!--<service android:name="edu.rosehulman.jungckjp_leekf.rosebandwidth.services.AlarmService"></service>-->
 
         <activity
             android:name=".activities.MainActivity"

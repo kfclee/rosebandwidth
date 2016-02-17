@@ -37,7 +37,6 @@ public class AlarmsAdapter  extends RecyclerView.Adapter<AlarmsAdapter.ViewHolde
     private final RecyclerView mRecyclerView;
     private API mAPI;
     public Firebase mAlarmsRef;
-    public Firebase mUsersRef;
     private AlarmsFragment mAlarmsFragment;
 
     private ArrayList<Alarm> mAlarms = new ArrayList<Alarm>();
